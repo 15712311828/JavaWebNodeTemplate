@@ -1,0 +1,52 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+<head>
+    <title>注册</title>
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <script>
+        $(document).ready(function(){
+            $("#btn_submit").click(function(){
+                param={};
+                param.name=$('input[name=name]').val();
+                param.password=$('input[name=password]').val();
+                param.sex=$('input[name=gender]').val();
+                param.phone=$('input[name=phone]').val();
+                var json=JSON.stringify(param);
+                $.ajax({
+                    type: "POST",
+                    url: "/api/user/signUp",
+                    dataType: "json",
+                    contentType: "application/json;charset=utf-8",
+                    data: json,
+    　　　　　　　　　success: function(result){
+                        if(result.status==0){
+                            alert("注册成功");
+                            $(location).attr('href', '/');
+                        }
+                        else{
+                            alert(result.message);
+                        }
+                    }
+                });
+            })
+            $("#btn_cancel").click(function(){
+                $(location).attr('href', '/');
+            })
+        })
+    </script>
+    <link rel="stylesheet" type="text/css" href="/css/common.css"/>
+</head>
+<body>
+    <div class="mid_div">
+        <p class="display_text">用户名：</p>
+        <input type="text" class="input_text" name="name">
+        <p class="display_text">密码：</p>
+        <input type="text" class="input_text" name="password">
+        <p class="display_text">性别：</p>
+        <input id="r1" type="radio" value="0" name="gender" class="input_radio">男</input>
+        <input id="r2" type="radio" value="1" name="gender" class="input_radio">女</input>
+        <p class="display_text">电话：</p>
+        <input type="text" class="input_text" name="phone">
+        <input type="button" value="注册" class="btn_submit" id="btn_submit">
+        <input type="button" value="取消" class="btn_cancel" id="btn_cancel">
+    </div>
+</body>

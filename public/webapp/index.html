@@ -1,6 +1,28 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <head>
     <title>Hello</title>
+    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <script>
+        $(function(){
+            $.ajax({
+                type: "POST",
+                url: "/api/user/info",
+                dataType: "json",
+　　　　　　　　　success: function(result){
+                    if(result.status==0){
+                        $("#user_div").html("<a class='header_menu'>你好 "+result.data.name+"</a>");
+                    }
+                    else{
+                        $("#user_div").html("<a class='header_menu' href='/webapp/login.html'>登录</a><a class='header_menu' href='/webapp/signUp.html'>注册</a>");
+                    }
+                }
+            });
+        });
+    </script>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
 </head>
 <body>
-    Hello World
+    <div class="header">
+        <div id="user_div" class="header_menu_div"></div>
+    </div>
 </body>
