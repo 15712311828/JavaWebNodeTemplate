@@ -1,7 +1,11 @@
 <!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN" "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
 <head>
     <title>Hello</title>
-    <script type="text/javascript" src="/js/jquery-3.3.1.min.js"></script>
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap.min.css">
+    <link rel="stylesheet" href="//cdn.bootcss.com/bootstrap/3.3.5/css/bootstrap-theme.min.css">
+    <script src="//cdn.bootcss.com/jquery/1.11.3/jquery.min.js"></script>
+    <script src="//cdn.bootcss.com/bootstrap/3.3.5/js/bootstrap.min.js"></script>
+    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
     <script>
         $(function(){
             $.ajax({
@@ -17,12 +21,51 @@
                     }
                 }
             });
+            param={};
+            param.page=1;
+            param.size=10;
+            var json=JSON.stringify(param);
+            $.ajax({
+                type: "POST",
+                url: "/api/ticket/get",
+                dataType: "json",
+                contentType: "application/json;charset=utf-8",
+                data: json,
+　　　　　　　　　success: function(result){
+                    if(result.status==0){
+                        var data = result.data.tickets;
+
+                        if(data.length>0){
+                            var tr = $("<tr></tr>");
+                            tr.append("<td>"+ "行程" +"</td>");
+                            tr.append("<td>"+ "价格" +"</td>");
+                            tr.append("<td>"+ "剩余" +"</td>");
+                            tr.append("<td></td>");
+                            tr.appendTo("#tickets_table");
+                        }
+
+                        for( var i = 0; i < data.length; i++ ) {
+                            var tr = $("<tr></tr>");
+                            tr.append("<td>"+ data[i].name +"</td>");
+                            tr.append("<td>"+ data[i].price +"</td>");
+                            tr.append("<td>"+ data[i].remaining +"</td>");
+                            tr.append("<td><a href='/api/order/create'>购买</a></td>");
+                            tr.appendTo("#tickets_table");
+                        }
+                    }
+                    else{
+                        alert("机票拉取失败")
+                    }
+                }
+            });
         });
     </script>
-    <link rel="stylesheet" type="text/css" href="/css/header.css"/>
 </head>
 <body>
     <div class="header">
         <div id="user_div" class="header_menu_div"></div>
+    </div>
+    <div class="tickets">
+        <table class="table table-hover" id="tickets_table"></table>
     </div>
 </body>
